@@ -54,11 +54,19 @@
           <el-radio v-model="activityRule.limit_type" :label="1" border>档期内</el-radio>
         </el-col>
         <el-col :span="6">
+          <el-form-item label="单张发票" prop="dzfp" required>
+            <el-radio-group v-model="activityRule.dzfp">
+            <el-radio-button  :label="0" border>否</el-radio-button>
+            <el-radio-button  :label="1" border>是</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="限制次数" prop="limit_num" required>
             <el-input-number v-model="activityRule.limit_num" :min="0" label="0表示不限制次数"></el-input-number>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="6">
           <span class="tip">*0表示不限制次数</span>
         </el-col>
       </el-form-item>
@@ -381,6 +389,7 @@ export default {
         end_date: "",
         limit_type: 1,
         limit_num: 0,
+        dzfp:0,
         lj_flag: 0,
         gold_flag: 1,
         only_flag: 0,
