@@ -38,6 +38,11 @@ export default new Router({
       path: '/report',
       name: 'report',
       component: ()=>import('../views/report')
+    },
+    {
+      path: '/couponhz',
+      name: 'Couponhz',
+      component: ()=>import('../views/CouponHZ')
     }
   ]
 })
