@@ -116,6 +116,7 @@
         <el-table-column width="120" prop="exchange_price" label="兑换金额"></el-table-column>
         <el-table-column width="100" prop="stock" label="总库存"></el-table-column>
         <el-table-column width="100" prop="left_stock" label="剩余库存"></el-table-column>
+        <el-table-column width="100" prop="minCount" label="起兑张数"></el-table-column>
         <el-table-column prop="max_num" label="最多兑换次数"></el-table-column>
       </el-table>
     </el-form>
@@ -236,8 +237,17 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item label="面值" :label-width="formLabelWidth" prop="price">
-          <el-input-number v-model="editCunpon.price" :min="0"></el-input-number>
+        <el-form-item label="面值" :label-width="formLabelWidth" required>
+          <el-col :span="8">
+            <el-form-item prop="price">
+              <el-input-number v-model="editCunpon.price" :min="0"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="起兑张数" prop="minCount">
+              <el-input-number v-model="editCunpon.minCount" :min="1" ></el-input-number>
+            </el-form-item>
+          </el-col>
         </el-form-item>
         <el-form-item label="级距" :label-width="formLabelWidth" prop="exchange_price">
           <el-input-number v-model="editCunpon.exchange_price" :min="0"></el-input-number>
@@ -377,7 +387,8 @@ export default {
         left_stock: 0,
         max_num: 0,
         price: 0,
-        exchange_price: 0
+        exchange_price: 0,
+        minCount:1,
       },
       user: "",
       activityList: [],
@@ -397,22 +408,22 @@ export default {
         activityDept: [],
         activityCoupon: [],
         activity_no_fkfs: [
-          { id: 16, label: "餐费" },
-          { id: 21, label: "积分抵现" },
-          { id: 26, label: "活动折扣1" },
-          { id: 27, label: "活动折扣3" },
-          { id: 34, label: "美食折扣" },
-          { id: 37, label: "会员礼金" },
-          { id: 46, label: "现金券(1F)" },
-          { id: 52, label: "美妆卡(1)" },
-          { id: 53, label: "美妆卡(2)" },
-          { id: 54, label: "美妆卡(3)" },
-          { id: 55, label: "专柜折扣" },
-          { id: 56, label: "1F化妆品券300" },
-          { id: 57, label: "B1F优惠券120" },
-          { id: 58, label: "3F/4F/6F优惠券" },
-          { id: 59, label: "2F/5F优惠券" },
-          { id: 60, label: "1F化妆品2" }
+          // { id: 16, label: "餐费" },
+          // { id: 21, label: "积分抵现" },
+          // { id: 26, label: "活动折扣1" },
+          // { id: 27, label: "活动折扣3" },
+          // { id: 34, label: "美食折扣" },
+          // { id: 37, label: "会员礼金" },
+          // { id: 46, label: "现金券(1F)" },
+          // { id: 52, label: "美妆卡(1)" },
+          // { id: 53, label: "美妆卡(2)" },
+          // { id: 54, label: "美妆卡(3)" },
+          // { id: 55, label: "专柜折扣" },
+          // { id: 56, label: "1F化妆品券300" },
+          // { id: 57, label: "B1F优惠券120" },
+          // { id: 58, label: "3F/4F/6F优惠券" },
+          // { id: 59, label: "2F/5F优惠券" },
+          // { id: 60, label: "1F化妆品2" }
         ],
         add_user: ""
       },
@@ -457,6 +468,7 @@ export default {
           }
         ],
         price: [{ required: true, message: "请输入券面值", trigger: "blur" }],
+        minCount: [{ required: true, message: "请输入起兑数量", trigger: "blur" }],
         exchange_price: [
           { required: true, message: "请输入券兑换级距", trigger: "blur" }
         ]
@@ -524,7 +536,6 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.showCouponTable = false;
-          // console.log(this.editCunpon)
           let cunpon = { ...this.editCunpon };
           cunpon.left_stock = cunpon.stock;
           this.activityRule.activityCoupon.push(cunpon);
